@@ -12,12 +12,18 @@ async function createChat() {
   return data;
 }
 
-async function sendChatMessage(chatId, message) {
+async function sendChatMessage(chatId, message, file) {
+  const formData = new FormData();
+  formData.append('message', message);
+  if (file) {
+    formData.append('file', file);
+  }
+
   const res = await fetch(BASE_URL + `/chats/${chatId}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message })
+    body: formData
   });
+
   if (!res.ok) {
     return Promise.reject({ status: res.status, data: await res.json() });
   }
@@ -25,5 +31,6 @@ async function sendChatMessage(chatId, message) {
 }
 
 export default {
-  createChat, sendChatMessage
+  createChat,
+  sendChatMessage
 };
