@@ -9,10 +9,14 @@ router = APIRouter()
 chats = {}
 
 async def sse_stream(chat_id: str, message: str, file_name: str):
-    yield f"Message: {message}\n\n"
+    # 한 글자씩 스트림
+    for char in message:
+        yield f"{char}"
+        await asyncio.sleep(0.1)  # 약간의 딜레이로 생성 느낌 구현
+    print("\n")
+    # 파일명이 있는 경우
     if file_name != "No file uploaded":
-        yield f"File Name: {file_name}\n\n"
-    await asyncio.sleep(1)
+        yield f"data: File Name: {file_name}\n\n"
 
 @router.post('/chats')
 async def create_new_chat():
@@ -31,7 +35,10 @@ async def chat(chat_id: str, message: str = Form(...), file: UploadFile = None):
 
     # 파일명 출력 (파일이 있을 경우)
     file_name = file.filename if file else None
+    if message == '영어성적':
+        response = "영어 졸업요건 기준은 TOEIC 750점 입니다."
     print(f"Chat ID: {chat_id}, Received Message: {message}, File Name: {file_name}")
+    print(type(message))
 
     # SSE 스트림에 파일명 추가
-    return EventSourceResponse(sse_stream(chat_id, message, file_name))
+    return EventSourceResponse(sse_stream(chat_id, response, file_name))
