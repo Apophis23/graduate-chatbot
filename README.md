@@ -9,8 +9,8 @@
 
 ## 구조
 이 레포지토리는 2가지 메인 디렉토리로 구성되어 있습니다.
-- backend/ : FastAPI와 RAG를 활용하여 구성된 백엔드 코드입니다.
-- frontend/ : React 프론트엔드 코드입니다. Vite.js를 빌드 도구 및 번들러로 사용합니다.
+- `backend/` : FastAPI와 RAG를 활용하여 구성된 백엔드 코드입니다.
+- `frontend/` : React 프론트엔드 코드입니다. Vite.js를 빌드 도구 및 번들러로 사용합니다.
 
 ## 설치
 ### 파이썬 및 종속성
@@ -19,30 +19,34 @@
 - Poetry (Python 패키지 관리자).
 
 ### 백엔드
-1. backend 폴더로 이동해서 가상환경 생성
-bash
+1. `backend` 폴더로 이동해서 가상환경 생성
+```bash
     cd backend
     python -m venv 가상환경이름
+```
 2. 가상환경 활성화
-bash
+```bash
     ./venv/Scripts/activate
+```
 3. poetry로 python 종속성 설치
-bash
+```bash
     poetry install
-
+```
 ### 프론트엔드
 1. frontend 폴더로 이동해서 자바스크립트 종속성 설치
-bash
+```bash
     cd frontend
     npm install
-
+```
 ## 어플리케이션 실행
 1. 백엔드 폴더에서 가상환경을 활성화 하고 백엔드 서버 시작
-bash
+```bash
     cd backend
     uvicorn app.main:app --reload
+```
 2. 다른 터미널을 활용하여 프론트엔드 서버 시작
-bash
+```bash
     cd frontend
     npm run dev
+```
 3. 웹 브라우저에서 http://localhost:3000을 열어 애플리케이션에 접속
