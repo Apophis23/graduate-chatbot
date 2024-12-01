@@ -19,6 +19,24 @@
 - Poetry (Python 패키지 관리자).
 
 ### 백엔드
+#### 방법 1. poetry 이용 (권장)
+1. poetry 설치 (Window powershell 기준)
+오류 뜨면 py를 python으로 변경
+```bash
+(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
+```
+
+2. 환경변수 생성
+아래 사이트 참고 하여 환경변수 추가 (추가시 변수 : Path, 값 : 경로)
+https://takeknowledge.tistory.com/145
+
+3. 파이썬 종속성 설치
+```bash
+    cd backend
+    poetry install
+```
+
+#### 방법 2. uvicorn 이용 (정안되면 사용)
 1. `backend` 폴더로 이동해서 가상환경 생성
 ```bash
     cd backend
@@ -28,9 +46,10 @@
 ```bash
     ./venv/Scripts/activate
 ```
-3. poetry로 python 종속성 설치
+3. uvicorn, fastapi 설치
 ```bash
-    poetry install
+    pip install uvicorn
+    pip install fastapi
 ```
 ### 프론트엔드
 1. frontend 폴더로 이동해서 자바스크립트 종속성 설치
@@ -39,9 +58,25 @@
     npm install
 ```
 ## 어플리케이션 실행
+### poetry 이용 (권장)
+1. 백엔드 폴더에서 아래 명령어 실행하여 백엔드 서버 시작
+```
+cd backend
+poetry shell
+fastapi dev app/main.py
+```
+2. 다른 터미널을 활용하여 프론트엔드 서버 시작
+```bash
+    cd frontend
+    npm run dev
+```
+3. 웹 브라우저에서 http://localhost:3000을 열어 애플리케이션에 접속
+
+### uvicorn 이용 (정안되면 사용)
 1. 백엔드 폴더에서 가상환경을 활성화 하고 백엔드 서버 시작
 ```bash
     cd backend
+    ./venv/Scripts/activate
     uvicorn app.main:app --reload
 ```
 2. 다른 터미널을 활용하여 프론트엔드 서버 시작
