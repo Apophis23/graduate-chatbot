@@ -7,8 +7,6 @@ import errorIcon from '@/assets/images/error.svg';
 function ChatMessages({ messages, isLoading }) {
   const scrollContentRef = useAutoScroll(isLoading);
 
-  console.log(messages); // 현재 상태 확인
-
   return (
     <div ref={scrollContentRef} className='grow space-y-4'>
       {messages.map(({ role, content, loading, error }, idx) => (

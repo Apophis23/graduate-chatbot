@@ -20,7 +20,4 @@ app.include_router(router)
 @app.head('/health')
 @app.get('/health')
 def health_check():
-    """
-    헬스 체크 엔드포인트.
-    """
     return 'ok'

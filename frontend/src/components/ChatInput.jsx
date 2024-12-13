@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import useAutosize from '@/hooks/useAutosize';
 import sendIcon from '@/assets/images/send.svg';
-import attachIcon from '@/assets/images/file_attach.png';
 
 function ChatInput({ newMessage, setNewMessage, isLoading, submitNewMessage, setFile }) {
   const textareaRef = useAutosize(newMessage);
@@ -36,7 +35,7 @@ function ChatInput({ newMessage, setNewMessage, isLoading, submitNewMessage, set
           <input
             type="file"
             ref={fileInputRef} // ref 연결
-            className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-primary-blue/20 file:text-primary-blue hover:file:bg-primary-blue/30"
+            className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-primary-blue/20 file:text-primary-grey hover:file:bg-primary-blue/30"
             onChange={handleFileChange}
           />
         </div>

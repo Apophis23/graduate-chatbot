@@ -19,6 +19,8 @@ export default {
     extend: {
       colors: {
         'primary-blue': 'rgb(146, 179, 202)',
+        'primary-grey': 'rgb(51, 51, 51)',
+        'primary-navy': 'rgb(0, 0, 300)',
         'primary-orange': 'rgb(243, 195, 177)',
         'main-text': 'rgb(0, 43, 49)',
         'error-red': 'rgb(208, 69, 82)',

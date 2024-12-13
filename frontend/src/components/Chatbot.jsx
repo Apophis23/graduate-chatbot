@@ -54,11 +54,12 @@ function Chatbot() {
   return (
     <div className='relative grow flex flex-col gap-6 pt-6'>
       {messages.length === 0 && (
-        <div className='mt-3 font-urbanist text-primary-blue text-xl font-light space-y-2'>
+        <div className='mt-3 font-urbanist text-primary-grey text-xl font-light space-y-2'>
           <p>👋 안녕하세요!</p>
-          <p>인하대학교 졸업사정 챗봇입니다. 인하대학교 포털시스템에 참고용 성적표를 다운로드하여 입력하시면 졸업 가능 여부와 졸업을 위해 필요한 사항을 안내드립니다.</p>
-          <p><b>인하대학교 포털시스템 : </b><a href="https://portal.inha.ac.kr/login.jsp?idpchked=false" target="_blank">여기를 클릭하세요</a></p>
+          <p>졸업사정 챗봇 <b>Easy Grad</b>입니다. 포털시스템에 참고용 성적표를 다운로드하여 입력하시면 졸업 관련 사항을 안내드립니다!</p>
+          <p><b>인하대학교 포털시스템 : </b> <a href="https://portal.inha.ac.kr/login.jsp?idpchked=false" target="_blank"><b className='text-primary-navy'>여기</b></a>를 눌러주세요!</p>
           <p>현재 소프트웨어융합대학을 대상으로 서비스 중입니다!</p>
+          <p>사용법을 알고 싶으시다면 '사용법 알려줘'와 같이 입력해 보세요!</p>
         </div>
       )}
       <ChatMessages
