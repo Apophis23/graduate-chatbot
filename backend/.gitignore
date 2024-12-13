@@ -3,7 +3,7 @@ venv/
 .venv/
 .env/
 .env
-.pdf
+*.pdf
 .env.*
 !.env.example
 data/*
