@@ -1,15 +1,16 @@
 import asyncio
 from fastapi import HTTPException  # 추가
 import fitz
-import openai
 import os
 import random
+import re
 import pdfplumber
 from app.prompt import *
 from app.course import *
 from app.config import Settings
 from app.message import *
 from app.course import *
+from app.ai import *
 
 def load_pdf_text(file_path):
     text = ""
@@ -17,14 +18,6 @@ def load_pdf_text(file_path):
         for page in pdf.pages:
             text += page.extract_text() + "\n"
     return text
-
-def preprocess_text(text):
-    # 정규 표현식 패턴 정의
-    pattern = r"[A-Z]{3}\d{4}\s.*?\s\d\.\d\s[A-Z]\d?\s[가-힣]+"
-    # 정규식을 사용하여 패턴에 맞는 모든 문자열 추출
-    matches = re.findall(pattern, text)
-    # 추출된 항목을 줄바꿈으로 이어붙여 반환
-    return "\n".join(matches)
 
 def extract_major_info(text):
     major_info = {}
@@ -44,62 +37,6 @@ def extract_major_info(text):
         major_info['복수전공'] = '없음'
     
     return major_info
-
-def remove_retake_courses(text):
-    # 정규식 패턴: '재 '로 시작하고 다음 학수번호가 나타나기 전까지의 내용을 매칭
-    pattern = r"재 [A-Z]{3}\d{4,5}.*?(?=[A-Z]{3}\d{4,5}|\Z)"
-    # 매칭된 부분을 공백으로 대체
-    cleaned_text = re.sub(pattern, "", text, flags=re.DOTALL)
-    # 중복 공백 제거
-    cleaned_text = re.sub(r'\s+', ' ', cleaned_text).strip()
-    return cleaned_text
-
-def extract_course_info(text):
-    courses = []
-    
-    # 과목 정보 패턴 정의
-    # 학수번호 과 목 명 학점평점전공 복 연 융 학 부
-    pattern = re.compile(
-        r'(?P<course_code>[A-Z]{3}\d{4,5})\s+'      # 학수번호
-        r'(?P<course_name>.+?(?=\s\d+\.\d))\s'       # 과목명                  
-        r'(?P<credit>\d+\.\d)\s+'                    # 학점
-        r'(?P<grade>[A-Z]\+?|P|F|-)\s+'              # 평점
-        r'(?P<classification>\S+)'                   # 전공 분류
-    )
-    
-    # 모든 과목 정보 찾기
-    for match in pattern.finditer(text):
-        course = {
-            '학수번호': match.group('course_code'),
-            '과목명': match.group('course_name').strip(),
-            '학점': float(match.group('credit')),
-            '평점': match.group('grade'),
-            '전공구분': match.group('classification'),
-        }
-        courses.append(course)
-    
-    return courses
-
-def calculate_credit_totals(courses):
-    total_credits = {}
-    
-    # 전공 구분별 학점 초기화
-    classifications = ['전필', '전선', '교필', '교선', '일선', '기타']
-    for cls in classifications:
-        total_credits[cls] = 0.0
-    
-    for course in courses:
-        cls = course['전공구분']
-        credit = course['학점']
-        
-        if course['평점'] in '-':
-            continue
-        if cls in total_credits:
-            total_credits[cls] += credit
-        else:
-            total_credits['기타'] += credit  # 정의되지 않은 전공구분은 '기타'로 처리
-    
-    return total_credits
 
 def recommend_system(transcript_text, course):
     recommend_number = random.randint(5, 8)
@@ -160,5 +97,6 @@ def make_response(message, file):
         response += "작업을 수행하기 위해서 참고용 성적표가 필요합니다. 참고용 성적표를 입력해 주세요."
     
     else:
-        response = graduation_requirements
+        response = request_response(message, transcript_text)
+        # response = graduation_requirements
     return response
